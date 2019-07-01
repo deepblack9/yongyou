@@ -214,6 +214,10 @@ class APPICons {
   static const String DEFAULT_IMAGE = 'assets/images/default_img.png';
   static const String DEFAULT_REMOTE_PIC = 'https://raw.githubusercontent.com/CarGuo/APPGithubAppFlutter/master/static/images/logo.png';
 
+  static const String TREE_COLLECT_ICON = 'assets/images/collect.png';
+  static const String TREE_EXPAND_ICON = 'assets/images/expand.png';
+  static const String TREE_MEMBER_ICON = 'assets/images/member.png';
+
   static const IconData HOME = const IconData(0xe624, fontFamily: APPICons.FONT_FAMILY);
   static const IconData MORE = const IconData(0xe674, fontFamily: APPICons.FONT_FAMILY);
   static const IconData SEARCH = const IconData(0xe61c, fontFamily: APPICons.FONT_FAMILY);

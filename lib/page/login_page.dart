@@ -112,8 +112,8 @@ class _LoginPageState extends State<LoginPage> {
 //                              }
 //                              CommonUtils.showLoadingDialog(context);
 
-                              Navigator.pop(context);
-                              NavigatorUtils.goHome(context);
+//                              Navigator.pop(context);
+//                              NavigatorUtils.goHome(context);
 
 //                              new Future.delayed(const Duration(seconds: 1), () {
 //                                NavigatorUtils.goHome(context);

@@ -1,11 +1,16 @@
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:yongyou/common/bean/SelectedItemBean.dart';
+import 'package:yongyou/common/config/config.dart';
+import 'package:yongyou/common/local/local_storage.dart';
 import 'package:yongyou/common/model/Sales.dart';
 import 'package:yongyou/common/redux/app_state.dart';
 import 'package:yongyou/common/style/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:yongyou/common/utils/common_utils.dart';
 import 'package:yongyou/widget/app_card_item.dart';
+import 'package:yongyou/widget/app_form_item.dart';
+import 'package:yongyou/widget/tree/bean/organ.dart';
 
 class NewSalesPage extends StatefulWidget {
   @override
@@ -15,17 +20,71 @@ class NewSalesPage extends StatefulWidget {
 class _State extends State<NewSalesPage> {
   final _formKey = GlobalKey<FormState>();
 
-  String	businessType; /// 业务类型
-  String	typeCode; /// 销售类型编码
-  String	custCode;	/// 客户编码
-  String	deptCode;	/// 部门编码
-  String	inventoryCode;	/// 存货编码
-  int     quantity; /// 数量
-  int	    bgift;	/// 是否赠品(0=非赠品;1=赠品)
-  int	    rowno;	/// 行号
+  SelectedItemBean _businessType = new SelectedItemBean('', '');// 业务类型
+//  String	_businessType = ''; /// 业务类型
+  SelectedItemBean _type = new SelectedItemBean('', '');// 销售类型
+//  String	_typeCode = ''; /// 销售类型编码
+  SelectedItemBean _cust = new SelectedItemBean('', '');// 客户
+//  String	_custCode = '';	/// 客户编码
+  SelectedItemBean _dept = new SelectedItemBean('', '');// 部门
+//  String	_deptCode = '';	// 部门编码
+  SelectedItemBean _inventory = new SelectedItemBean('', '');// 存货
+//  String	_inventoryCode = '';	// 存货编码
+  int     _quantity = 0; // 数量
+//  int	    _bgift = 0;	// 是否赠品(0=非赠品;1=赠品)
+  SelectedItemBean _bgift = new SelectedItemBean('非赠品', '0');// 是否赠品(0=非赠品;1=赠品)
+  int	    _rowno = 1;	// 行号
 
   var value;
   FocusNode _focusNode = FocusNode();
+
+  List<SelectedItemBean> _typeList = [
+    new SelectedItemBean('title1', 'value1'),
+    new SelectedItemBean('title2', 'value2'),
+    new SelectedItemBean('title3', 'value3'),
+    new SelectedItemBean('title4', 'value4'),
+    new SelectedItemBean('title5', 'value5'),
+    new SelectedItemBean('title6', 'value6'),
+    new SelectedItemBean('title7', 'value7'),
+    new SelectedItemBean('title8', 'value8'),
+    new SelectedItemBean('title9', 'value9'),
+    new SelectedItemBean('title10', 'value10'),
+  ];
+
+  List<Member> memberList = [
+    new Member('title1', 'value1'),
+    new Member('title2', 'value2'),
+    new Member('title3', 'value3'),
+    new Member('title4', 'value4'),
+    new Member('title5', 'value5'),
+  ];
+
+  List<Organ> subTreeList = [
+    new Organ(null, [
+      new Member('title1', 'value1'),
+      new Member('title2', 'value2'),
+      new Member('title3', 'value3'),
+      new Member('title4', 'value4'),
+      new Member('title5', 'value5'),
+    ], "node11")
+  ];
+  List<Organ> treeList = [
+    new Organ([
+      new Organ(null, [
+        new Member('title1', 'value1'),
+        new Member('title2', 'value2'),
+        new Member('title3', 'value3'),
+        new Member('title4', 'value4'),
+        new Member('title5', 'value5'),
+      ], "node11")
+    ], [
+      new Member('title1', 'value1'),
+      new Member('title2', 'value2'),
+      new Member('title3', 'value3'),
+      new Member('title4', 'value4'),
+      new Member('title5', 'value5'),
+    ], "node1")
+  ];
 
   @override
   void initState() {
@@ -38,86 +97,46 @@ class _State extends State<NewSalesPage> {
     });
   }
 
-  _renderItem(
-      IconData leftIcon, String title, String value, VoidCallback onPressed) {
-    return new APPCardItem(
-      child: new RawMaterialButton(
-        onPressed: onPressed,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: const EdgeInsets.all(15.0),
-        constraints: const BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-        child: new Row(
-          children: <Widget>[
-            new Icon(leftIcon),
-            new Container(
-              width: 10.0,
-            ),
-            new Text(title, style: APPConstant.normalSubText),
-            new Container(
-              width: 10.0,
-            ),
-            new Expanded(child: new Text(value, style: APPConstant.normalText)),
-            new Container(
-              width: 10.0,
-            ),
-            new Icon(APPICons.REPOS_ITEM_NEXT, size: 12.0),
-          ],
-        ),
-      ),
-    );
-  }
-
-  List<Widget> _renderList(Sales salesInfo, Store store) {
+  List<Widget> _renderList() {
     return [
-      _renderItem(Icons.info, CommonUtils.getLocale(context).businessType,
-          "", () {
+      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).businessType,
+          value: _businessType.title, onPressed: () {
+            CommonUtils.showSelectOptionDialog(context, _typeList, (index) {
+              setState(() { _businessType.title = _typeList[index].title; _businessType.value = _typeList[index].value; });
+            });
+          }),
+      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).typeCode,
+          value: _type.title, onPressed: () {
+            CommonUtils.showSelectOptionDialog(context, _typeList, (index) {
+              setState(() { _type.title = _typeList[index].title; _type.value = _typeList[index].value; });
+            });
+          }),
+      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).custCode,
+          value: _cust.title, onPressed: () {
+            CommonUtils.showSelectOptionDialog(context, _typeList, (index) {
+              setState(() { _cust.title = _typeList[index].title; _cust.value = _typeList[index].value; });
+            });
+          }),
+      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).deptCode,
+          value: _dept.title, onPressed: () {
+            CommonUtils.showTreeOptionDialog(context, treeList, (index) {});
+          }),
+      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).inventoryCode,
+          value: _inventory.title, onPressed: () {
             shwoSelectModal();
           }),
-      _renderItem(
-          Icons.email,
-          CommonUtils.getLocale(context).typeCode,
-          "", () {
-//        _showEditDialog(CommonUtils.getLocale(context).user_profile_email,
-//            userInfo.email, "email", store);
-      }),
-      _renderItem(Icons.link, CommonUtils.getLocale(context).custCode,
-          "", () {
-//            _showEditDialog(CommonUtils.getLocale(context).user_profile_link,
-//                userInfo.blog, "blog", store);
+      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).quantity,
+          value: '$_quantity', onPressed: () {
+            shwoSelectModal();
           }),
-      _renderItem(Icons.group, CommonUtils.getLocale(context).deptCode,
-          "", () {
-//            _showEditDialog(CommonUtils.getLocale(context).user_profile_org,
-//                userInfo.company, "company", store);
+      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).bgift,
+          value: _bgift.title, onPressed: () {
+            shwoSelectModal();
           }),
-      _renderItem(
-          Icons.location_on,
-          CommonUtils.getLocale(context).inventoryCode,
-          "", () {
-//        _showEditDialog(CommonUtils.getLocale(context).user_profile_location,
-//            userInfo.location, "location", store);
-      }),
-      _renderItem(
-          Icons.message,
-          CommonUtils.getLocale(context).quantity,
-          "", () {
-//        _showEditDialog(CommonUtils.getLocale(context).user_profile_info,
-//            userInfo.bio, "bio", store);
-      }),
-      _renderItem(
-          Icons.message,
-          CommonUtils.getLocale(context).bgift,
-          "", () {
-//        _showEditDialog(CommonUtils.getLocale(context).user_profile_info,
-//            userInfo.bio, "bio", store);
-      }),
-      _renderItem(
-          Icons.message,
-          CommonUtils.getLocale(context).rowno,
-          "", () {
-//        _showEditDialog(CommonUtils.getLocale(context).user_profile_info,
-//            userInfo.bio, "bio", store);
-      }),
+      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).rowno,
+          value: '$_rowno', onPressed: () {
+            shwoSelectModal();
+          }),
     ];
   }
 
@@ -133,6 +152,7 @@ class _State extends State<NewSalesPage> {
               title: new Text("Camera"),
               onTap: () async {
                 // imageFile = await ImagePicker.pickImage(source: ImageSource.camera);
+                setState(() { _businessType.title = 'Camera'; _businessType.value = '0'; });
                 Navigator.pop(context);
               },
             ),
@@ -141,6 +161,7 @@ class _State extends State<NewSalesPage> {
               title: new Text("Gallery"),
               onTap: () async {
                 // imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+                setState(() { _businessType.title = 'Gallery'; _businessType.value = '1'; });
                 Navigator.pop(context);
               },
             ),
@@ -171,66 +192,12 @@ class _State extends State<NewSalesPage> {
           color: Color(APPColors.white),
           child: new SingleChildScrollView(
             child: new Column(
-              children: _renderList(null, store),
+              children: _renderList(),
             ),
           ),
         ),
       );
     });
-  }
-  List<DropdownMenuItem> getListData(){
-    List<DropdownMenuItem> items=new List();
-    DropdownMenuItem dropdownMenuItem1=new DropdownMenuItem(
-      child:new Text('1'),
-      value: '1',
-    );
-    items.add(dropdownMenuItem1);
-    DropdownMenuItem dropdownMenuItem2=new DropdownMenuItem(
-      child:new Text('2'),
-      value: '2',
-    );
-    items.add(dropdownMenuItem2);
-    DropdownMenuItem dropdownMenuItem3=new DropdownMenuItem(
-      child:new Text('3'),
-      value: '3',
-    );
-    items.add(dropdownMenuItem3);
-    DropdownMenuItem dropdownMenuItem4=new DropdownMenuItem(
-      child:new Text('4'),
-      value: '4',
-    );
-    items.add(dropdownMenuItem4);
-    DropdownMenuItem dropdownMenuItem5=new DropdownMenuItem(
-      child:new Text('5'),
-      value: '5',
-    );
-    items.add(dropdownMenuItem5);
-    DropdownMenuItem dropdownMenuItem6=new DropdownMenuItem(
-      child:new Text('6'),
-      value: '6',
-    );
-    items.add(dropdownMenuItem6);
-    DropdownMenuItem dropdownMenuItem7=new DropdownMenuItem(
-      child:new Text('7'),
-      value: '7',
-    );
-    items.add(dropdownMenuItem7);
-    DropdownMenuItem dropdownMenuItem8=new DropdownMenuItem(
-      child:new Text('8'),
-      value: '8',
-    );
-    items.add(dropdownMenuItem8);
-    DropdownMenuItem dropdownMenuItem9=new DropdownMenuItem(
-      child:new Text('9'),
-      value: '9',
-    );
-    items.add(dropdownMenuItem9);
-    DropdownMenuItem dropdownMenuItem10=new DropdownMenuItem(
-      child:new Text('10'),
-      value: '10',
-    );
-    items.add(dropdownMenuItem10);
-    return items;
   }
 
 //  @override

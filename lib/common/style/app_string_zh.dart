@@ -16,7 +16,7 @@ class APPStringZh extends APPStringBase {
   @override
   String 	businessType = '业务类型';
   @override
-  String	typeCode = '销售类型编码';
+  String	typeCode = '销售类型';
   @override
   String	custCode = '客户编码';
   @override

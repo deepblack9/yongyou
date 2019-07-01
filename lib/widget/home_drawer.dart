@@ -105,37 +105,6 @@ class HomeDrawer extends StatelessWidget {
                           ),
                         ),
                         new ListTile(
-                            title: new Text(
-                              CommonUtils.getLocale(context).home_reply,
-                              style: APPConstant.normalText,
-                            ),
-                            onTap: () {
-                              String content = "";
-                              CommonUtils.showEditDialog(context, CommonUtils.getLocale(context).home_reply, (title) {}, (res) {
-                                content = res;
-                              }, () {
-                                if (content == null || content.length == 0) {
-                                  return;
-                                }
-                                CommonUtils.showLoadingDialog(context);
-//                                IssueDao.createIssueDao(
-//                                        "CarGuo", "APPGithubAppFlutter", {"title": CommonUtils.getLocale(context).home_reply, "body": content})
-//                                    .then((result) {
-//                                  Navigator.pop(context);
-//                                  Navigator.pop(context);
-//                                });
-                              }, titleController: new TextEditingController(), valueController: new TextEditingController(), needTitle: false);
-                            }),
-                        new ListTile(
-                            title: new Text(
-                              CommonUtils.getLocale(context).home_history,
-                              style: APPConstant.normalText,
-                            ),
-                            onTap: () {
-//                              NavigatorUtils.gotoCommonList(context, CommonUtils.getLocale(context).home_history, "repository", "history",
-//                                  userName: "", reposName: "");
-                            }),
-                        new ListTile(
                             title: new Hero(
                                 tag: "home_user_info",
                                 child: new Material(
@@ -154,22 +123,6 @@ class HomeDrawer extends StatelessWidget {
                             ),
                             onTap: () {
                               showThemeDialog(context, store);
-                            }),
-                        new ListTile(
-                            title: new Text(
-                              CommonUtils.getLocale(context).home_change_language,
-                              style: APPConstant.normalText,
-                            ),
-                            onTap: () {
-                              showLanguageDialog(context, store);
-                            }),
-                        new ListTile(
-                            title: new Text(
-                              CommonUtils.getLocale(context).home_check_update,
-                              style: APPConstant.normalText,
-                            ),
-                            onTap: () {
-//                              ReposDao.getNewsVersion(context, true);
                             }),
                         new ListTile(
                             title: new Text(

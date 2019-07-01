@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:yongyou/common/bean/SelectedItemBean.dart';
 //import 'package:flutter_just_toast/flutter_just_toast.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yongyou/common/localization/default_localizations.dart';
@@ -23,6 +24,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_statusbar/flutter_statusbar.dart';
+import 'package:yongyou/widget/tree/app_tree.dart';
+import 'package:yongyou/widget/tree/bean/organ.dart';
 
 /**
  * 通用逻辑
@@ -329,6 +332,31 @@ class CommonUtils {
           );
         });
   }
+  ///版本更新
+  static Future<Null> showUpdateDialog(
+      BuildContext context, String contentMsg) {
+    return NavigatorUtils.showAPPDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text(CommonUtils.getLocale(context).app_version_title),
+          content: new Text(contentMsg),
+          actions: <Widget>[
+            new FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: new Text(CommonUtils.getLocale(context).app_cancel)),
+            new FlatButton(
+                onPressed: () {
+                  launch(Address.updateUrl);
+                  Navigator.pop(context);
+                },
+                child: new Text(CommonUtils.getLocale(context).app_ok)),
+          ],
+        );
+      });
+  }
 
   ///列表item dialog
   static Future<Null> showCommitOptionDialog(
@@ -376,29 +404,94 @@ class CommonUtils {
         });
   }
 
-  ///版本更新
-  static Future<Null> showUpdateDialog(
-      BuildContext context, String contentMsg) {
+
+
+  ///列表select dialog
+  static Future<Null> showSelectOptionDialog(
+      BuildContext context,
+      List<SelectedItemBean> commitMaps,
+      ValueChanged<int> onTap, {
+        width = 250.0,
+        height = 400.0
+      }) {
+    return NavigatorUtils.showAPPDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: new Container(
+            width: width,
+            height: height,
+            padding: new EdgeInsets.all(4.0),
+            margin: new EdgeInsets.all(20.0),
+            decoration: new BoxDecoration(
+              color: Color(APPColors.white),
+              //用一个BoxDecoration装饰器提供背景图片
+              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            ),
+            child: new ListView.builder(
+              itemCount: commitMaps.length,
+              itemBuilder: (context, index) {
+                return APPFlexButton(
+                  maxLines: 1,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  fontSize: 14.0,
+                  text: commitMaps[index].title,
+//                  textColor: Color(APPColors.white),
+                  onPress: () {
+                    Navigator.pop(context);
+                    onTap(index);
+                  },
+                );
+              }
+            ),
+          ),
+        );
+      }
+    );
+  }
+
+  ///tree dialog
+  static Future<Null> showTreeOptionDialog(
+      BuildContext context,
+      List<Organ> commitMaps,
+      ValueChanged<int> onTap, {
+        width = 250.0,
+        height = 400.0
+      }) {
     return NavigatorUtils.showAPPDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: new Text(CommonUtils.getLocale(context).app_version_title),
-            content: new Text(contentMsg),
-            actions: <Widget>[
-              new FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: new Text(CommonUtils.getLocale(context).app_cancel)),
-              new FlatButton(
-                  onPressed: () {
-                    launch(Address.updateUrl);
-                    Navigator.pop(context);
-                  },
-                  child: new Text(CommonUtils.getLocale(context).app_ok)),
-            ],
+          return Center(
+            child: new Container(
+              width: width,
+              height: height,
+              padding: new EdgeInsets.all(4.0),
+              margin: new EdgeInsets.all(20.0),
+              decoration: new BoxDecoration(
+                color: Color(APPColors.white),
+                //用一个BoxDecoration装饰器提供背景图片
+                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+              ),
+              child: new Tree(commitMaps, false)
+//              new ListView.builder(
+//                  itemCount: commitMaps.length,
+//                  itemBuilder: (context, index) {
+//                    return APPFlexButton(
+//                      maxLines: 1,
+//                      mainAxisAlignment: MainAxisAlignment.start,
+//                      fontSize: 14.0,
+//                      text: commitMaps[index].title,
+////                  textColor: Color(APPColors.white),
+//                      onPress: () {
+//                        Navigator.pop(context);
+//                        onTap(index);
+//                      },
+//                    );
+//                  }
+//              ),
+            ),
           );
-        });
+        }
+    );
   }
 }
