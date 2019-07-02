@@ -454,7 +454,7 @@ class CommonUtils {
   static Future<Null> showTreeOptionDialog(
       BuildContext context,
       List<Organ> commitMaps,
-      ValueChanged<int> onTap, {
+      ValueChanged<Member> onTap, {
         width = 250.0,
         height = 400.0
       }) {
@@ -472,7 +472,7 @@ class CommonUtils {
                 //用一个BoxDecoration装饰器提供背景图片
                 borderRadius: BorderRadius.all(Radius.circular(4.0)),
               ),
-              child: new Tree(commitMaps, false)
+              child: new Tree(commitMaps, false, (member){Navigator.pop(context);onTap(member);})
 //              new ListView.builder(
 //                  itemCount: commitMaps.length,
 //                  itemBuilder: (context, index) {

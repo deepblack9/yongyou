@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yongyou/common/router/size_route.dart';
 import 'package:yongyou/page/home_page.dart';
+import 'package:yongyou/page/inventory_list_page.dart';
 import 'package:yongyou/page/login_page.dart';
 import 'package:yongyou/page/new_sales_page.dart';
 
@@ -33,13 +34,22 @@ class NavigatorUtils {
     Navigator.pushReplacementNamed(context, LoginPage.sName);
   }
 
-  ///仓库详情
+  ///新增销售订单
   static Future goNewSales(BuildContext context) {
     ///利用 SizeRoute 动画大小打开
     return Navigator.push(
         context,
         new SizeRoute(
             widget: pageContainer(NewSalesPage())));
+  }
+
+  ///存货列表
+  static Future goInventoryList(BuildContext context) {
+    ///利用 SizeRoute 动画大小打开
+    return Navigator.push(
+        context,
+        new SizeRoute(
+            widget: pageContainer(InventoryListPage())));
   }
 
 //  ///个人中心

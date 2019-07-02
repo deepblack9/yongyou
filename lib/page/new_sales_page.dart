@@ -8,6 +8,7 @@ import 'package:yongyou/common/redux/app_state.dart';
 import 'package:yongyou/common/style/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:yongyou/common/utils/common_utils.dart';
+import 'package:yongyou/common/utils/navigator_utils.dart';
 import 'package:yongyou/widget/app_card_item.dart';
 import 'package:yongyou/widget/app_form_item.dart';
 import 'package:yongyou/widget/tree/bean/organ.dart';
@@ -119,11 +120,13 @@ class _State extends State<NewSalesPage> {
           }),
       new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).deptCode,
           value: _dept.title, onPressed: () {
-            CommonUtils.showTreeOptionDialog(context, treeList, (index) {});
+            CommonUtils.showTreeOptionDialog(context, treeList, (member) {
+              setState(() { _dept.title = member.name; _cust.value = member.value; });
+            });
           }),
       new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).inventoryCode,
           value: _inventory.title, onPressed: () {
-            shwoSelectModal();
+            NavigatorUtils.goInventoryList(context);
           }),
       new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).quantity,
           value: '$_quantity', onPressed: () {

@@ -13,7 +13,9 @@ class Tree extends StatefulWidget {
 
   bool showSearchBar = true;
 
-  Tree(this.organs, this.showSearchBar);
+  ValueChanged<Member> onTap;
+
+  Tree(this.organs, this.showSearchBar, this.onTap);
 
   @override
   State<StatefulWidget> createState() {
@@ -198,6 +200,8 @@ class TreeState extends State<Tree> {
               }
               setState(() {
               });
+            } else {
+              widget.onTap(node.object as Member);
             }
           },
         ));
