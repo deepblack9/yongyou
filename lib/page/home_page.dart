@@ -4,10 +4,7 @@ import 'dart:io';
 import 'package:android_intent/android_intent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import 'package:yongyou/common/localization/default_localizations.dart';
 import 'package:yongyou/common/style/app_style.dart';
 import 'package:yongyou/common/utils/common_utils.dart';
@@ -19,7 +16,6 @@ import 'package:yongyou/widget/home_drawer.dart';
 
 import 'dispatch_list_page.dart';
 import 'my_page.dart';
-import 'new_sales_page.dart';
 
 /**
  * 主页

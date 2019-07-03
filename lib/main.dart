@@ -54,6 +54,7 @@ class FlutterReduxApp extends StatelessWidget {
       store: store,
       child: new StoreBuilder<APPState>(builder: (context, store) {
         return new MaterialApp(
+            debugShowCheckedModeBanner: false,  // 去掉右上角Debug图标
 
           ///多语言实现代理
             localizationsDelegates: [

@@ -15,17 +15,18 @@ class APPFormItem extends StatelessWidget {
   final String title;
   final String value;
   final VoidCallback onPressed;
+  final child;
 
 
-  APPFormItem({@required this.title, @required this.value, @required this.onPressed, this.leftIcon,
-    this.margin, this.color, this.shape, this.elevation = 5.0});
+  APPFormItem({@required this.title, @required this.value, @required this.onPressed, this.child,
+    this.leftIcon, this.margin, this.color, this.shape, this.elevation = 5.0});
 
   @override
   Widget build(BuildContext context) {
     EdgeInsets margin = this.margin;
     RoundedRectangleBorder shape = this.shape;
     Color color = this.color;
-    margin ??= EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0);
+    margin ??= EdgeInsets.only(left: 5.0, top: 5.0, right: 5.0, bottom: 5.0);
     shape ??= new RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)));
     color ??= new Color(APPColors.cardWhite);
     return new Card(
@@ -48,7 +49,7 @@ class APPFormItem extends StatelessWidget {
             new Container(
               width: 10.0,
             ),
-            new Expanded(child: new Text(value,textAlign: TextAlign.right, style: APPConstant.normalText)),
+            new Expanded(child: child ?? new Text(value,textAlign: TextAlign.right, style: APPConstant.normalText)),
             new Container(
               width: 10.0,
             ),

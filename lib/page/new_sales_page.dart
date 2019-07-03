@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:yongyou/common/bean/SelectedItemBean.dart';
@@ -12,6 +13,8 @@ import 'package:yongyou/common/utils/navigator_utils.dart';
 import 'package:yongyou/widget/app_card_item.dart';
 import 'package:yongyou/widget/app_form_item.dart';
 import 'package:yongyou/widget/tree/bean/organ.dart';
+
+import 'inventory_list_page.dart';
 
 class NewSalesPage extends StatefulWidget {
   @override
@@ -126,11 +129,25 @@ class _State extends State<NewSalesPage> {
           }),
       new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).inventoryCode,
           value: _inventory.title, onPressed: () {
-            NavigatorUtils.goInventoryList(context);
+            NavigatorUtils.goInventoryList(context).then((inventory) {
+              setState(() {
+                _inventory.title = inventory.title; _inventory.value = inventory.value;
+              });
+            });
           }),
-      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).quantity,
-          value: '$_quantity', onPressed: () {
-            shwoSelectModal();
+      new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).quantity, value: '$_quantity',
+          child: new TextField(
+            inputFormatters: <TextInputFormatter>[
+              WhitelistingTextInputFormatter.digitsOnly,
+            ],
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(left: 5.0, top: 0.0, right: 5.0, bottom: 0.0),
+            ),
+          ),
+          onPressed: () {
+//            shwoSelectModal();
           }),
       new APPFormItem(leftIcon: Icons.info, title: CommonUtils.getLocale(context).bgift,
           value: _bgift.title, onPressed: () {
@@ -184,9 +201,10 @@ class _State extends State<NewSalesPage> {
             new IconButton( // action button
               icon: new Icon(Icons.save),
               onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  // Process data.
-                }
+                Navigator.pop(context);
+//                if (_formKey.currentState.validate()) {
+//                  // Process data.
+//                }
               },
             ),
           ],
